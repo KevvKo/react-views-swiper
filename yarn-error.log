@@ -1,0 +1,53 @@
+Arguments: 
+  /Users/k.klein/.nvm/versions/node/v16.18.1/bin/node /Users/k.klein/.nvm/versions/node/v16.18.1/bin/yarn addd webpack
+
+PATH: 
+  /Users/k.klein/.pyenv/shims:/Users/k.klein/.nvm/versions/node/v16.18.1/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/usr/local/bin:/Users/k.klein/Library/Android/sdk/tools:/Users/k.klein/Library/Android/sdk/tools/bin:/Users/k.klein/Library/Android/sdk/emulator:/Users/k.klein/Library/Android/sdk/tools:/Users/k.klein/Library/Android/sdk/platform-tools
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  16.18.1
+
+Platform: 
+  darwin x64
+
+Trace: 
+  SyntaxError: /Users/k.klein/projects/react-views-swiper/package.json: Unexpected token } in JSON at position 579
+      at JSON.parse (<anonymous>)
+      at /Users/k.klein/.nvm/versions/node/v16.18.1/lib/node_modules/yarn/lib/cli.js:1629:59
+      at Generator.next (<anonymous>)
+      at step (/Users/k.klein/.nvm/versions/node/v16.18.1/lib/node_modules/yarn/lib/cli.js:310:30)
+      at /Users/k.klein/.nvm/versions/node/v16.18.1/lib/node_modules/yarn/lib/cli.js:321:13
+
+npm manifest: 
+  {
+    "name": "react-views-swiper",
+    "version": "1.0.0",
+    "description": "A library to swipe between multiple views per drag an mouse ",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+ssh://git@github.com/KevvKo/react-views-swiper.git"
+    },
+    "keywords": [
+      "react"
+    ],
+    "author": "Kevin Klein",
+    "license": "ISC",
+    "bugs": {
+      "url": "https://github.com/KevvKo/react-views-swiper/issues"
+    },
+    "homepage": "https://github.com/KevvKo/react-views-swiper#readme",
+  
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
