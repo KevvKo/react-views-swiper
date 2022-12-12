@@ -2,7 +2,7 @@
   "name": "react-views-swiper",
   "version": "1.0.0",
   "description": "A library to swipe between multiple views per drag an mouse ",
-  "main": "index.js",
+  "main": "index.tsx",
   "scripts": {
     "start": "webpack serve",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -36,5 +36,9 @@
     "webpack-cli": "^5.0.1",
     "webpack-dev-server": "^4.11.1",
     "webpack-server": "^0.1.2"
+  },
+  "devDependencies": {
+    "@types/react-dom": "^18.0.9",
+    "ts-loader": "^9.4.2"
   }
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
+import { Swiper } from './packages/react-views-swiper'
 ReactDOM.render(
-    <h1>Hello!</h1>,
+    <Swiper />,
     document.querySelector('#app')
 )
