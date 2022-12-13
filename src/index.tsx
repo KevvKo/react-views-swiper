@@ -1,7 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Swiper } from './packages/react-views-swiper'
-ReactDOM.render(
-    <Swiper />,
-    document.querySelector('#app')
+import {StrictMode} from 'react';
+import React, {useState} from 'react';
+import { createRoot } from 'react-dom/client';
+import App from './App';
+
+const rootElement = document.getElementById('app');
+const root = createRoot(rootElement!)
+
+root.render(
+    <StrictMode>
+        <App />
+    </StrictMode>
 )
