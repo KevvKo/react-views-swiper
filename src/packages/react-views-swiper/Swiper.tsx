@@ -1,6 +1,4 @@
 import React, { Children, ReactNode, CSSProperties, useEffect, useState } from "react";
-import { createModuleResolutionCache } from "typescript";
-import SlideTargets from "./SlideTargets";
 import View from "./View";
 
 interface SwiperProps {
@@ -53,7 +51,6 @@ const Swiper = ({children, index, onIndexChanged, renderOnlyActive = false}: Swi
 
     return (
         <div style={styles.root}>
-            <SlideTargets targets={childrenList.length}/>
             <div id="slide-container" style={styles.imageContainer}>
             {Children.map(childrenList, (child, indexChild) => {
                 if(renderOnlyActive && currentIndex !== indexChild) return null;
