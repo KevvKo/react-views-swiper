@@ -11,6 +11,7 @@ const root: CSSProperties = {
     transition: 'left 0.5s',
     background: 'aquamarine',
     position: 'relative',
+    left: 0,
     height: '100%',
     width: '100%',
     flexShrink: 0,
