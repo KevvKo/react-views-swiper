@@ -1,28 +1,69 @@
-import React, { Children, ReactNode } from "react";
+import React, { Children, ReactNode, CSSProperties, useEffect, useState } from "react";
+import { createModuleResolutionCache } from "typescript";
+import SlideTargets from "./SlideTargets";
 import View from "./View";
 
 interface SwiperProps {
     children: ReactNode | React.ReactNode[];
-    index?: number | undefined;
+    index?: number | 0;
     onIndexChanged?: (index: number) => void | undefined;
+    renderOnlyActive?: boolean;
 }
 
+const root: CSSProperties = {
+    overflow: "hidden",
+    display: 'flex',
+    position: 'relative',
+    height: '100%',
+    width: '100%'
+}
 
-const Swiper = ({children, index, onIndexChanged}: SwiperProps) => {
+const imageContainer: CSSProperties = {
+    overflow: "hidden",
+    display: 'flex',
+    position: 'relative',
+    height: '100%',
+    width: '100%'
+}
+
+const styles = {
+    root,
+    imageContainer,
+}
+
+const Swiper = ({children, index, onIndexChanged, renderOnlyActive = false}: SwiperProps) => {
 
     const childrenList = Children.toArray(children)
-    
-    return (
-        <div>
-            {Children.map(childrenList, (child, indexChild) => {
+    const [currentIndex, setCurrentIndex] = useState(index)
 
-                if(index !== indexChild) return null;
-                let hidden = index === indexChild;
+    useEffect(() => {
+        if(index !== currentIndex) setCurrentIndex(index)
+        const views = document.querySelectorAll<HTMLElement>('#slide-view');
+   
+        if(views && index !== currentIndex) {
+            views.forEach(view =>{
+                console.log(currentIndex)
+                const viewWidth = view.getBoundingClientRect().width;
+                if(currentIndex === 0) view.style.left = `-${ viewWidth * 1}px`
+                else if(currentIndex === childrenList.length -1) view.style.left = `-${ viewWidth * 0}px`
+                else view.style.left = `-${ viewWidth * (currentIndex! + 1)}px`
+            })
+        }
+    }, [index])
+
+    return (
+        <div style={styles.root}>
+            <SlideTargets targets={childrenList.length}/>
+            <div id="slide-container" style={styles.imageContainer}>
+            {Children.map(childrenList, (child, indexChild) => {
+                if(renderOnlyActive && currentIndex !== indexChild) return null;
+                let hidden = currentIndex === indexChild;
 
                 return(
-                    <View hidden={hidden}>{child}</View>
+                    <View index={indexChild} hidden={hidden}>{child}</View>
                 )
-            })}
+                })}
+            </div>
         </div>
     )
 }
