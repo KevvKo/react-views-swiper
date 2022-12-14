@@ -6,6 +6,7 @@ interface SwiperProps {
     index?: number | 0;
     onIndexChanged?: (index: number) => void | undefined;
     renderOnlyActive?: boolean;
+    containerStyle?: CSSProperties
 }
 
 const root: CSSProperties = {
@@ -29,7 +30,7 @@ const styles = {
     imageContainer,
 }
 
-const Swiper = ({children, index, onIndexChanged, renderOnlyActive = false}: SwiperProps) => {
+const Swiper = ({children, index, onIndexChanged, renderOnlyActive = false, containerStyle}: SwiperProps) => {
 
     const childrenList = Children.toArray(children)
     const [currentIndex, setCurrentIndex] = useState(index)
@@ -50,7 +51,7 @@ const Swiper = ({children, index, onIndexChanged, renderOnlyActive = false}: Swi
     }, [index])
 
     return (
-        <div style={styles.root}>
+        <div style={{...styles.root, ...containerStyle}}>
             <div id="slide-container" style={styles.imageContainer}>
             {Children.map(childrenList, (child, indexChild) => {
                 if(renderOnlyActive && currentIndex !== indexChild) return null;

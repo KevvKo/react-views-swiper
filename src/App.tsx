@@ -37,7 +37,7 @@ const App = () => {
     return(
         <div style={styles.container}>  
             <button onClick={handleClickBack} style={styles.buttons}>back</button>
-            <Swiper onIndexChanged={handleChangeIndex} index={index}>
+            <Swiper onIndexChanged={handleChangeIndex} index={index} >
                 <div style={{backgroundColor: 'green'}}>1</div>
                 <div style={{backgroundColor: 'blue'}}>2</div>
                 <div style={{backgroundColor: 'red'}}>3</div>
