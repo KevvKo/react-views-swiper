@@ -1,8 +1,9 @@
-import React, { ReactNode, useEffect , CSSProperties, createRef, MouseEvent, TouchEvent } from 'react';
+import React, { ReactNode, useEffect ,useState, CSSProperties, createRef, MouseEvent, TouchEvent } from 'react';
 import './View.css'
 
 interface ViewProps {
     children: ReactNode| ReactNode[];
+    currentIndex: number,
     hidden: boolean,
     index?: number,
     viewCount: number
@@ -22,17 +23,16 @@ const styles = {
     root,
 }
 
-let isDragging = false,
-  startPos = 0,
-  currentTranslate = 0,
-  prevTranslate = 0,
-  animationID: any,
-  currentIndex = 0
-
-const View = ({children, hidden, index, viewCount}: ViewProps) => {
+const View = ({children, hidden, index, viewCount, currentIndex}: ViewProps) => {
     
     const viewRef = createRef<HTMLDivElement>()
-    
+    let isDragging = false,
+    startPos = 0,
+    currentTranslate = 0,
+    prevTranslate = 0,
+    animationID: any
+    const [viewWidth, setViewWidth] = useState(0);
+    console.log(viewRef.current)
     const getPositionX = (event: any) => {
         return event.type.includes('mouse') ? event.pageX : event.touches[0].clientX
     }
@@ -55,7 +55,7 @@ const View = ({children, hidden, index, viewCount}: ViewProps) => {
   
       
     const handleTouchStart = (event: MouseEvent | TouchEvent, index: number) => {
-        
+
             currentIndex = index
             startPos = getPositionX(event)
             isDragging = true
@@ -67,11 +67,12 @@ const View = ({children, hidden, index, viewCount}: ViewProps) => {
         cancelAnimationFrame(animationID)
         isDragging = false
         const movedBy = currentTranslate - prevTranslate
+
         // if moved enough negative then snap to next slide if there is one
-        if (movedBy < -100 && currentIndex < viewCount - 1) currentIndex += 1
+        if (movedBy < -viewWidth/2 && currentIndex < viewCount - 1) currentIndex += 1
 
         // if moved enough positive then snap to previous slide if there is one
-        if (movedBy > 100 && currentIndex > 0) currentIndex -= 1
+        if (movedBy > viewWidth/2 && currentIndex > 0) currentIndex -= 1
 
         setPositionByIndex()
 
@@ -84,6 +85,14 @@ const View = ({children, hidden, index, viewCount}: ViewProps) => {
             currentTranslate = prevTranslate + currentPosition - startPos
           }
     }
+
+    useEffect(() => {
+        if(viewRef && viewWidth === 0) {
+            setViewWidth(
+                viewRef.current!.getBoundingClientRect().width
+            )
+        }
+    }, [viewRef]);
 
     return (
         <>

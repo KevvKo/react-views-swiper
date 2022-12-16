@@ -38,14 +38,14 @@ const Swiper = ({children, index, onIndexChanged, renderOnlyActive = false, cont
         if(index !== currentIndex) setCurrentIndex(index)
         const views = document.querySelectorAll<HTMLElement>('.slide-view');
 
-        if(views) {
-            views.forEach(view =>{
-                const viewWidth = view.getBoundingClientRect().width;
-                if(currentIndex === 0) view.style.left = `-${ viewWidth * 1}px`
-                else if(currentIndex === childrenList.length -1) view.style.left = `-${ viewWidth * 0}px`
-                else view.style.left = `-${ viewWidth * (currentIndex! +1)}px`
-            })
-        }
+        // if(views) {
+        //     views.forEach(view =>{
+        //         const viewWidth = view.getBoundingClientRect().width;
+        //         if(currentIndex === 0) view.style.left = `-${ viewWidth * 1}px`
+        //         else if(currentIndex === childrenList.length -1) view.style.left = `-${ viewWidth * 0}px`
+        //         else view.style.left = `-${ viewWidth * (currentIndex! +1)}px`
+        //     })
+        // }
     }, [index, currentIndex])
 
     return (
@@ -56,7 +56,12 @@ const Swiper = ({children, index, onIndexChanged, renderOnlyActive = false, cont
                 let hidden = currentIndex === indexChild;
 
                 return(
-                    <View index={indexChild} hidden={hidden} viewCount={childrenList.length}>{child}</View>
+                    <View   
+                        index={indexChild} 
+                        hidden={hidden} 
+                        currentIndex={currentIndex!} 
+                        viewCount={childrenList.length}
+                    >{child}</View>
                 )
                 })}
             </div>
