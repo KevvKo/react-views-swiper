@@ -2,6 +2,6 @@
     cursor: grab;
 }
 
-.slider-view .grabbing:hover {
+.grabbing:hover {
     cursor: grabbing;
 }
