@@ -5,6 +5,7 @@ const styles = {
     container: {
         display: "flex",
         alignItems: "center",
+        height: '100px'
     },
     buttons: {
         margin: "1rem"
@@ -38,9 +39,9 @@ const App = () => {
         <div style={styles.container}>  
             <button onClick={handleClickBack} style={styles.buttons}>back</button>
             <Swiper onIndexChanged={handleChangeIndex} index={index} >
-                <div style={{backgroundColor: 'green'}}>1</div>
-                <div style={{backgroundColor: 'blue'}}>2</div>
-                <div style={{backgroundColor: 'red'}}>3</div>
+                <div style={{backgroundColor: 'green', height: '100%'}}>1</div>
+                <div style={{backgroundColor: 'blue', height: '100%'}}>2</div>
+                <div style={{backgroundColor: 'red', height: '100%'}}>3</div>
             </Swiper>
             <button onClick={handleClickNext} style={styles.buttons}>next</button>
         </div>

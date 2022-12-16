@@ -37,11 +37,10 @@ const Swiper = ({children, index, onIndexChanged, renderOnlyActive = false, cont
 
     useEffect(() => {
         if(index !== currentIndex) setCurrentIndex(index)
-        const views = document.querySelectorAll<HTMLElement>('#slide-view');
-   
+        const views = document.querySelectorAll<HTMLElement>('.slide-view');
+
         if(views && index !== currentIndex) {
             views.forEach(view =>{
-                console.log(currentIndex)
                 const viewWidth = view.getBoundingClientRect().width;
                 if(currentIndex === 0) view.style.left = `-${ viewWidth * 1}px`
                 else if(currentIndex === childrenList.length -1) view.style.left = `-${ viewWidth * 0}px`

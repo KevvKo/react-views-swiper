@@ -1,0 +1,7 @@
+.slide-view:hover{
+    cursor: grab;
+}
+
+.slider-view .grabbing:hover {
+    cursor: grabbing;
+}
