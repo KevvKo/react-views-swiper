@@ -4,6 +4,7 @@ import './View.css'
 interface ViewProps {
     children: ReactNode| ReactNode[];
     currentIndex: number,
+    onChangeIndex: (index: number) => void | undefined;
     hidden: boolean,
     index?: number,
     viewCount: number
@@ -23,7 +24,7 @@ const styles = {
     root,
 }
 
-const View = ({children, hidden, index, viewCount, currentIndex}: ViewProps) => {
+const View = ({children, hidden, index, viewCount, currentIndex, onChangeIndex}: ViewProps) => {
     
     const viewRef = createRef<HTMLDivElement>()
     let isDragging = false,
@@ -32,7 +33,6 @@ const View = ({children, hidden, index, viewCount, currentIndex}: ViewProps) => 
     prevTranslate = 0,
     animationID: any
     const [viewWidth, setViewWidth] = useState(0);
-    console.log(viewRef.current)
     const getPositionX = (event: any) => {
         return event.type.includes('mouse') ? event.pageX : event.touches[0].clientX
     }
@@ -43,14 +43,14 @@ const View = ({children, hidden, index, viewCount, currentIndex}: ViewProps) => 
       }
     
       function setPositionByIndex() {
-        currentTranslate = currentIndex * -window.innerWidth
+        currentTranslate = currentIndex * -viewWidth
         prevTranslate = currentTranslate
         setSliderPosition()
       }
     
     
     function setSliderPosition() {
-        viewRef.current!.style.transform = `translateX(${currentTranslate}px)`
+        if(viewRef.current) viewRef.current!.style.transform = `translateX(${currentTranslate}px)`
       }
   
       
@@ -60,7 +60,7 @@ const View = ({children, hidden, index, viewCount, currentIndex}: ViewProps) => 
             startPos = getPositionX(event)
             isDragging = true
             animationID = requestAnimationFrame(animation)
-            viewRef.current?.classList.add('grabbing')         
+            if(viewRef.current) viewRef.current?.classList.add('grabbing')         
     }
 
     const handleTouchEnd = () => {
@@ -68,15 +68,28 @@ const View = ({children, hidden, index, viewCount, currentIndex}: ViewProps) => 
         isDragging = false
         const movedBy = currentTranslate - prevTranslate
 
-        // if moved enough negative then snap to next slide if there is one
-        if (movedBy < -viewWidth/2 && currentIndex < viewCount - 1) currentIndex += 1
+        if (movedBy < -viewWidth/2 ) {
+            const newIndex = currentIndex +1
 
-        // if moved enough positive then snap to previous slide if there is one
-        if (movedBy > viewWidth/2 && currentIndex > 0) currentIndex -= 1
+            if( newIndex > viewCount - 1) {
+                onChangeIndex(0)
+                console.log(newIndex)
+            }
+            else onChangeIndex(newIndex)
+        } 
+
+        if (movedBy > viewWidth/2 ) {
+            const newIndex = currentIndex -1
+
+            if( newIndex < 0 ) {
+                onChangeIndex(viewCount - 1)
+            }
+            else onChangeIndex(newIndex)
+        }
 
         setPositionByIndex()
 
-        viewRef.current?.classList.remove('grabbing')
+        if(viewRef.current) viewRef.current?.classList.remove('grabbing')
     }
     
     const handleTouchMove = (event: MouseEvent | TouchEvent) => {
@@ -88,11 +101,15 @@ const View = ({children, hidden, index, viewCount, currentIndex}: ViewProps) => 
 
     useEffect(() => {
         if(viewRef && viewWidth === 0) {
-            setViewWidth(
+            if(viewRef.current) setViewWidth(
                 viewRef.current!.getBoundingClientRect().width
             )
         }
     }, [viewRef]);
+
+    useEffect(() => {
+        setPositionByIndex()
+    }, [currentIndex]);
 
     return (
         <>
