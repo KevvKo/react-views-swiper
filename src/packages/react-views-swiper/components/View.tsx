@@ -19,16 +19,12 @@ const root: CSSProperties = {
     height: '100%',
     width: '100%',
     flexShrink: 0,
+    transition: 'left 0.5s ease-out',
 }
 
 const styles = {
     root,
 }
-
-
-let
-currentTranslate = 0,
-prevTranslate = 0
 
 const View = ({children, hidden, index, viewCount, currentIndex, onChangeIndex, setTranslation, translation }: ViewProps) => {
     
@@ -36,56 +32,69 @@ const View = ({children, hidden, index, viewCount, currentIndex, onChangeIndex, 
     const [viewWidth, setViewWidth] = useState(0);
     const [isDragging, setIsDragging] = useState(false)
     const [startPosition, setStartPosition ] = useState(0)
-    const [ previousTranslation, setPreviousTranslation ] = useState(0)
 
     const getPositionX = (event: any) => {
         return event.type.includes('mouse') ? event.pageX : event.touches[0].clientX
     }
     
     const handleTouchStart = (event: MouseEvent | TouchEvent, index: number) => {
-        setStartPosition(getPositionX(event))
         setIsDragging(true)
+
+        setStartPosition(getPositionX(event))
         if(viewRef.current) viewRef.current?.classList.add('grabbing')         
     }
         
     const handleTouchMove = (event: MouseEvent | TouchEvent) => {
         if (isDragging) {
             const currentPosition = getPositionX(event)
-            const currentTranslate = prevTranslate + currentPosition - startPosition
+            const currentTranslate = currentPosition - startPosition
             setTranslation(currentTranslate)
         }
     }
 
     const handleTouchEnd = (event: MouseEvent | TouchEvent) => {
-        setIsDragging(false)
-        const movedBy = translation - previousTranslation
 
-        if(movedBy < -viewWidth/2){
-            if(currentIndex !== viewCount -1) onChangeIndex( currentIndex + 1)
+        if(isDragging){
+            setIsDragging(false)
+
+            if(translation < -viewWidth/2){
+                if(currentIndex !== viewCount -1) {
+                    onChangeIndex( currentIndex + 1)
+                    setTranslation(0)
+                    return
+                }
+            }
+    
+            if(translation > viewWidth/2){
+                if(currentIndex !== 0) {
+                    onChangeIndex( currentIndex - 1)
+                    setTranslation(0)
+                    return
+                }
+            }
+
+            setTranslation(0)
+
         }
 
-        if(movedBy > viewWidth/2){
-            if(currentIndex !== 0) onChangeIndex( currentIndex - 1)
-        }
-
-        setPreviousTranslation(translation)
         if(viewRef.current) viewRef.current?.classList.remove('grabbing')
 
     }
 
     useEffect(() => {
         if(viewRef && viewWidth === 0) {
-            if(viewRef.current) setViewWidth(
-                viewRef.current!.getBoundingClientRect().width
-            )
-        }
-        if(viewWidth && viewRef.current){
-            viewRef.current!.style.left = `-${viewWidth*currentIndex}px`
+            if(viewRef.current) {
+                setViewWidth( viewRef.current!.getBoundingClientRect().width)
+            }
         }
     }, [viewWidth, viewRef])
 
     useLayoutEffect(() => {
-         viewRef.current!.style.transform = `translateX(${translation}px)`
+        if(viewRef.current) viewRef.current!.style.left = `-${viewWidth*currentIndex}px`
+    }, [currentIndex])
+
+    useLayoutEffect(() => {
+            viewRef.current!.style.transform = `translateX(${translation}px)`
     }, [translation])
 
     return (
