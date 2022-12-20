@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect ,useState, CSSProperties, createRef, MouseEvent, TouchEvent } from 'react';
+import React, { useLayoutEffect, ReactNode, useRef, useEffect ,useState, CSSProperties, createRef, MouseEvent, TouchEvent } from 'react';
 import './View.css'
 
 interface ViewProps {
@@ -7,96 +7,70 @@ interface ViewProps {
     onChangeIndex: (index: number) => void | undefined;
     hidden: boolean,
     index?: number,
-    viewCount: number
+    viewCount: number,
+    translation: number,
+    setTranslation: (index: number) => void | undefined;
 }
 
 const root: CSSProperties = {
-    transition: 'left 0.5s',
     background: 'aquamarine',
     position: 'relative',
     left: 0,
     height: '100%',
     width: '100%',
-    flexShrink: 0
+    flexShrink: 0,
 }
 
 const styles = {
     root,
 }
 
-const View = ({children, hidden, index, viewCount, currentIndex, onChangeIndex}: ViewProps) => {
+
+let
+currentTranslate = 0,
+prevTranslate = 0
+
+const View = ({children, hidden, index, viewCount, currentIndex, onChangeIndex, setTranslation, translation }: ViewProps) => {
     
     const viewRef = createRef<HTMLDivElement>()
-    let isDragging = false,
-    startPos = 0,
-    currentTranslate = 0,
-    prevTranslate = 0,
-    animationID: any
     const [viewWidth, setViewWidth] = useState(0);
+    const [isDragging, setIsDragging] = useState(false)
+    const [startPosition, setStartPosition ] = useState(0)
+    const [ previousTranslation, setPreviousTranslation ] = useState(0)
+
     const getPositionX = (event: any) => {
         return event.type.includes('mouse') ? event.pageX : event.touches[0].clientX
     }
     
-    function animation() {
-        setSliderPosition()
-        if (isDragging) requestAnimationFrame(animation)
-      }
-    
-      function setPositionByIndex() {
-        currentTranslate = currentIndex * -viewWidth
-        prevTranslate = currentTranslate
-        setSliderPosition()
-      }
-    
-    
-    function setSliderPosition() {
-        if(viewRef.current) viewRef.current!.style.transform = `translateX(${currentTranslate}px)`
-      }
-  
-      
     const handleTouchStart = (event: MouseEvent | TouchEvent, index: number) => {
-
-            currentIndex = index
-            startPos = getPositionX(event)
-            isDragging = true
-            animationID = requestAnimationFrame(animation)
-            if(viewRef.current) viewRef.current?.classList.add('grabbing')         
+        setStartPosition(getPositionX(event))
+        setIsDragging(true)
+        if(viewRef.current) viewRef.current?.classList.add('grabbing')         
     }
-
-    const handleTouchEnd = () => {
-        cancelAnimationFrame(animationID)
-        isDragging = false
-        const movedBy = currentTranslate - prevTranslate
-
-        if (movedBy < -viewWidth/2 ) {
-            const newIndex = currentIndex +1
-
-            if( newIndex > viewCount - 1) {
-                onChangeIndex(0)
-                console.log(newIndex)
-            }
-            else onChangeIndex(newIndex)
-        } 
-
-        if (movedBy > viewWidth/2 ) {
-            const newIndex = currentIndex -1
-
-            if( newIndex < 0 ) {
-                onChangeIndex(viewCount - 1)
-            }
-            else onChangeIndex(newIndex)
-        }
-
-        setPositionByIndex()
-
-        if(viewRef.current) viewRef.current?.classList.remove('grabbing')
-    }
-    
+        
     const handleTouchMove = (event: MouseEvent | TouchEvent) => {
         if (isDragging) {
             const currentPosition = getPositionX(event)
-            currentTranslate = prevTranslate + currentPosition - startPos
-          }
+            const currentTranslate = prevTranslate + currentPosition - startPosition
+            setTranslation(currentTranslate)
+        }
+    }
+
+    const handleTouchEnd = (event: MouseEvent | TouchEvent) => {
+        setIsDragging(false)
+        const movedBy = translation - previousTranslation
+
+        if(movedBy < -viewWidth/2){
+            if(currentIndex !== viewCount -1) onChangeIndex( currentIndex + 1)
+        }
+
+        if(movedBy > viewWidth/2){
+            if(currentIndex !== 0) onChangeIndex( currentIndex - 1)
+        }
+
+        setPreviousTranslation(translation)
+        if(viewRef.current) viewRef.current?.classList.remove('grabbing')
+
     }
 
     useEffect(() => {
@@ -105,11 +79,14 @@ const View = ({children, hidden, index, viewCount, currentIndex, onChangeIndex}:
                 viewRef.current!.getBoundingClientRect().width
             )
         }
-    }, [viewRef]);
+        if(viewWidth && viewRef.current){
+            viewRef.current!.style.left = `-${viewWidth*currentIndex}px`
+        }
+    }, [viewWidth, viewRef])
 
-    useEffect(() => {
-        setPositionByIndex()
-    }, [currentIndex]);
+    useLayoutEffect(() => {
+         viewRef.current!.style.transform = `translateX(${translation}px)`
+    }, [translation])
 
     return (
         <>

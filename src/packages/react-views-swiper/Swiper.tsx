@@ -33,23 +33,16 @@ const styles = {
 const Swiper = ({children, index, onIndexChanged, renderOnlyActive = false, containerStyle}: SwiperProps) => {
     const childrenList = Children.toArray(children)
     const [currentIndex, setCurrentIndex] = useState(index)
+    const [translation, setTranslation ] = useState(0);
 
     useEffect(() => {
-        // if(index !== currentIndex) setCurrentIndex(index)
-        const views = document.querySelectorAll<HTMLElement>('.slide-view');
-        // if(views) {
-        //     views.forEach(view =>{
-        //         const viewWidth = view.getBoundingClientRect().width;
-        //         if(currentIndex === 0) view.style.left = `-${ viewWidth * 1}px`
-        //         else if(currentIndex === childrenList.length -1) view.style.left = `-${ viewWidth * 0}px`
-        //         else view.style.left = `-${ viewWidth * (currentIndex! +1)}px`
-        //     })
-        // }
-    }, [index, currentIndex])
+        setCurrentIndex(index)
+    }, [index])
 
     const handleIndexChange = (index: number) => {
 
     }
+
     return (
         <div style={{...styles.root, ...containerStyle}}>
             <div id="slide-container" style={styles.imageContainer}>
@@ -64,6 +57,8 @@ const Swiper = ({children, index, onIndexChanged, renderOnlyActive = false, cont
                         currentIndex={currentIndex!} 
                         viewCount={childrenList.length}
                         onChangeIndex={setCurrentIndex}
+                        translation={translation}
+                        setTranslation={setTranslation}
                     >{child}</View>
                 )
                 })}
