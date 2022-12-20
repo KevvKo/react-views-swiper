@@ -1,4 +1,5 @@
-import React, { useLayoutEffect, ReactNode, useRef, useEffect ,useState, CSSProperties, createRef, MouseEvent, TouchEvent } from 'react';
+import React, { useLayoutEffect, ReactNode, useEffect ,useState, CSSProperties, createRef, MouseEvent, TouchEvent } from 'react';
+import { getPositionX } from '../../react-views-swiper-core';
 import './View.css'
 
 interface ViewProps {
@@ -33,10 +34,6 @@ const View = ({children, hidden, index, viewCount, currentIndex, onChangeIndex, 
     const [isDragging, setIsDragging] = useState(false)
     const [startPosition, setStartPosition ] = useState(0)
 
-    const getPositionX = (event: any) => {
-        return event.type.includes('mouse') ? event.pageX : event.touches[0].clientX
-    }
-    
     const handleTouchStart = (event: MouseEvent | TouchEvent, index: number) => {
         setIsDragging(true)
 
@@ -74,7 +71,6 @@ const View = ({children, hidden, index, viewCount, currentIndex, onChangeIndex, 
             }
 
             setTranslation(0)
-
         }
 
         if(viewRef.current) viewRef.current?.classList.remove('grabbing')

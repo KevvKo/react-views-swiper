@@ -1,0 +1,1 @@
+export { default as getPositionX } from './core/core'
