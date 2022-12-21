@@ -3,7 +3,7 @@ import View from "./View";
 
 interface SwiperProps {
     children: ReactNode | React.ReactNode[];
-    index?: number | 0;
+    index?: number;
     onIndexChanged?: (index: number) => void | undefined;
     renderOnlyActive?: boolean;
     containerStyle?: CSSProperties
@@ -41,50 +41,48 @@ const Swiper = ({children, index, onIndexChanged, renderOnlyActive, containerSty
 
     useEffect(() => {
 
-        if(index && previousIndex) {
+        if(index !== undefined && previousIndex !== undefined){
             const directionDistance = index - previousIndex;
 
             // sync with negative direction
             if ( directionDistance === -1 || directionDistance === maxIndex ){
     
                 if(currentIndex === 0) setCurrentIndex(maxIndex);
-                else setCurrentIndex( prev => prev ? prev + 1 : index);
+                else setCurrentIndex( prev => prev !== undefined ? prev -1 : prev);
             }
     
             // sync with positive direction
             else if ( directionDistance === 1 || directionDistance === maxIndex *(-1)){
                 if ( currentIndex === maxIndex) setCurrentIndex(0);
-                else setCurrentIndex( prev => prev ? prev + 1 : index);
+                else setCurrentIndex( prev => prev !== undefined ? prev +1 : prev );
             }
             setPreviousIndex(index);
     
             if(onIndexChanged) onIndexChanged(index);
         }
-
     }, [index]);
-
-
-    if ( !currentIndex ) return <div>Init Swiper...</div>;
 
     return (
         <div style={{...styles.root, ...containerStyle}}>
-            <div id="slide-container" style={styles.imageContainer}>
-                {Children.map(childrenList, (child, indexChild) => {
-                    if(renderOnlyActive && currentIndex !== indexChild) return null;
-                    const hidden = currentIndex === indexChild;
-
-                    return(
-                        <View   
-                            hidden={hidden} 
-                            currentIndex={currentIndex} 
-                            viewCount={childrenList.length}
-                            onChangeIndex={setCurrentIndex}
-                            translation={translation}
-                            setTranslation={setTranslation}
-                        >{child}</View>
-                    );
-                })}
-            </div>
+            { currentIndex !== undefined &&
+                <div id="slide-container" style={styles.imageContainer}>
+                    {Children.map(childrenList, (child, indexChild) => {
+                        if(renderOnlyActive && currentIndex !== indexChild) return null;
+                        const hidden = currentIndex === indexChild;
+    
+                        return(
+                            <View   
+                                hidden={hidden} 
+                                currentIndex={currentIndex} 
+                                viewCount={childrenList.length}
+                                onChangeIndex={setCurrentIndex}
+                                translation={translation}
+                                setTranslation={setTranslation}
+                            >{child}</View>
+                        );
+                    })}
+                </div>
+            }
         </div>
     );
 };
