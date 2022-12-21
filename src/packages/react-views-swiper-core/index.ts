@@ -1,1 +1,1 @@
-export { default as getPositionX } from './core/core';
+export { default as getPositionX } from './core/getPositionX';

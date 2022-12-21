@@ -36,7 +36,7 @@ const styles = {
     root,
 };
 
-const View = ({children, hidden, index, viewCount, currentIndex, onChangeIndex, setTranslation, translation }: ViewProps) => {
+const View = ({children, hidden, viewCount, currentIndex, onChangeIndex, setTranslation, translation }: ViewProps) => {
     
     const viewRef = createRef<HTMLDivElement>();
     const [viewWidth, setViewWidth] = useState(0);

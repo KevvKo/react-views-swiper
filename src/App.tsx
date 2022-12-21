@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Swiper } from './packages/react-views-swiper'
+import { Swiper } from './packages/react-views-swiper'
 
 const styles = {
     container: {
@@ -19,7 +19,7 @@ const App = () => {
         console.log("change")
     }
     const handleClickNext = () => {
-        if(index >= 5) {
+        if(index >= 2) {
             setIndex(0); 
             return
         }
@@ -27,8 +27,8 @@ const App = () => {
     }
 
     const handleClickBack = () => {
-        if(index === 0) {
-            setIndex(5); 
+        if(index === 0) {
+            setIndex(2); 
             return
         }
         setIndex(index - 1)
@@ -38,13 +38,10 @@ const App = () => {
     return(
         <div style={styles.container}>  
             <button onClick={handleClickBack} style={styles.buttons}>back</button>
-            <Swiper onIndexChanged={handleChangeIndex} index={index} >
+            <Swiper onIndexChanged={handleChangeIndex} >
                 <div style={{backgroundColor: 'green', height: '100%'}}>1</div>
                 <div style={{backgroundColor: 'blue', height: '100%'}}>2</div>
                 <div style={{backgroundColor: 'red', height: '100%'}}>3</div>
-                <div style={{backgroundColor: 'yellow', height: '100%'}}>4</div>
-                <div style={{backgroundColor: 'black', height: '100%'}}>5</div>
-                <div style={{backgroundColor: 'brown', height: '100%'}}>6</div>
             </Swiper>
             <button onClick={handleClickNext} style={styles.buttons}>next</button>
         </div>
