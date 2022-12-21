@@ -31,12 +31,31 @@ const styles = {
 }
 
 const Swiper = ({children, index, onIndexChanged, renderOnlyActive = false, containerStyle}: SwiperProps) => {
+    
     const childrenList = Children.toArray(children)
+    const viewCount = childrenList.length
+    const maxIndex = viewCount - 1;
     const [currentIndex, setCurrentIndex] = useState(index)
+    const [previousIndex, setPreviousIndex] = useState(index)
     const [translation, setTranslation ] = useState(0);
 
     useEffect(() => {
-        setCurrentIndex(index)
+
+        const directionDistance = index! - previousIndex!
+
+        // sync with negative direction
+        if ( directionDistance === -1 || directionDistance === maxIndex ){
+
+            if(currentIndex === 0) setCurrentIndex(maxIndex)
+            else setCurrentIndex( prev => prev! - 1 )
+        }
+
+        // sync with positive direction
+        else if ( directionDistance === 1 || directionDistance === maxIndex *(-1)){
+            if ( currentIndex === maxIndex) setCurrentIndex(0);
+            else setCurrentIndex( prev => prev! +1)
+        }
+        setPreviousIndex(index)
     }, [index])
 
     const handleIndexChange = (index: number) => {

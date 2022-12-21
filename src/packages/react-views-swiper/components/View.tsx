@@ -49,7 +49,7 @@ const View = ({children, hidden, index, viewCount, currentIndex, onChangeIndex, 
         setStartPosition(getPositionX(event));
         if(viewRef.current) viewRef.current?.classList.add('grabbing');   
     };
-        
+
     const handleTouchMove = (event: MouseEvent | TouchEvent) => {
         if (isDragging) {
             const currentPosition = getPositionX(event);
