@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const useSyncWithIndex = (index: number, maxIndex: number ) => {
+export const useSyncWithIndex = (index: number, maxIndex: number ) => {
 
     const [currentIndex, setCurrentIndex] = useState(index);
     const [previousIndex, setPreviousIndex] = useState(index);
@@ -30,5 +30,3 @@ const useSyncWithIndex = (index: number, maxIndex: number ) => {
 
     return [currentIndex, setCurrentIndex] as const;
 };
-
-export default useSyncWithIndex;
