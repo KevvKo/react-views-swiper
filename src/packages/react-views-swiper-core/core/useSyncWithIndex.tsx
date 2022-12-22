@@ -29,6 +29,6 @@ const useSyncWithIndex = (index: number, maxIndex: number ) => {
     }, [index]);
 
     return [currentIndex, setCurrentIndex] as const;
-}
+};
 
 export default useSyncWithIndex;

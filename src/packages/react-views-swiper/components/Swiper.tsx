@@ -38,9 +38,8 @@ const Swiper = ({children, index, onIndexChanged, renderOnlyActive, containerSty
     const childrenList = Children.toArray(children);
     const viewCount = childrenList.length;
     const maxIndex = viewCount - 1;
-    const [ currentIndex, setCurrentIndex ] = useSyncWithIndex(index!, maxIndex)
+    const [ currentIndex, setCurrentIndex ] = useSyncWithIndex(index!, maxIndex);
     const [translation, setTranslation ] = useState(0);
-    const [ isHovering, setIsHovering ] = useState(false)
 
     useEffect(() => {
         if( index && onIndexChanged) onIndexChanged(index);
