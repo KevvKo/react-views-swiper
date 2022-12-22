@@ -1,6 +1,7 @@
 import React, { Children, ReactNode, CSSProperties, useEffect, useState } from "react";
 import { useSyncWithIndex } from "../../react-views-swiper-core";
 import View from "./View";
+import '../css/Swiper.css';
 
 interface SwiperProps {
     children: ReactNode | React.ReactNode[];
@@ -15,7 +16,8 @@ const root: CSSProperties = {
     display: 'flex',
     position: 'relative',
     height: '100%',
-    width: '100%'
+    width: '100%',
+
 };
 
 const imageContainer: CSSProperties = {
@@ -38,12 +40,12 @@ const Swiper = ({children, index, onIndexChanged, renderOnlyActive, containerSty
     const maxIndex = viewCount - 1;
     const [ currentIndex, setCurrentIndex ] = useSyncWithIndex(index!, maxIndex)
     const [translation, setTranslation ] = useState(0);
+    const [ isHovering, setIsHovering ] = useState(false)
 
     useEffect(() => {
         if( index && onIndexChanged) onIndexChanged(index);
     }, [index]);
 
-    console.log(currentIndex)
     return (
         <div style={{...styles.root, ...containerStyle}}>
             { currentIndex !== undefined &&

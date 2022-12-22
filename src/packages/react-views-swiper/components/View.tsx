@@ -6,12 +6,9 @@ import React, {
     CSSProperties, 
     createRef, 
     MouseEvent, 
-    TouchEvent,
-    Dispatch,
-    SetStateAction
+    TouchEvent
 } from 'react';
 import { getPositionX } from '../../react-views-swiper-core';
-import './View.css';
 
 interface ViewProps {
     children: ReactNode| ReactNode[];
