@@ -6,7 +6,9 @@ import React, {
     CSSProperties, 
     createRef, 
     MouseEvent, 
-    TouchEvent 
+    TouchEvent,
+    Dispatch,
+    SetStateAction
 } from 'react';
 import { getPositionX } from '../../react-views-swiper-core';
 import './View.css';

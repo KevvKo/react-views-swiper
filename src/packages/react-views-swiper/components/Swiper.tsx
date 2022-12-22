@@ -1,4 +1,5 @@
 import React, { Children, ReactNode, CSSProperties, useEffect, useState } from "react";
+import { useSyncWithIndex } from "../../react-views-swiper-core";
 import View from "./View";
 
 interface SwiperProps {
@@ -35,33 +36,14 @@ const Swiper = ({children, index, onIndexChanged, renderOnlyActive, containerSty
     const childrenList = Children.toArray(children);
     const viewCount = childrenList.length;
     const maxIndex = viewCount - 1;
-    const [currentIndex, setCurrentIndex] = useState(index);
-    const [previousIndex, setPreviousIndex] = useState(index);
+    const [ currentIndex, setCurrentIndex ] = useSyncWithIndex(index!, maxIndex)
     const [translation, setTranslation ] = useState(0);
 
     useEffect(() => {
-
-        if(index !== undefined && previousIndex !== undefined){
-            const directionDistance = index - previousIndex;
-
-            // sync with negative direction
-            if ( directionDistance === -1 || directionDistance === maxIndex ){
-    
-                if(currentIndex === 0) setCurrentIndex(maxIndex);
-                else setCurrentIndex( prev => prev !== undefined ? prev -1 : prev);
-            }
-    
-            // sync with positive direction
-            else if ( directionDistance === 1 || directionDistance === maxIndex *(-1)){
-                if ( currentIndex === maxIndex) setCurrentIndex(0);
-                else setCurrentIndex( prev => prev !== undefined ? prev +1 : prev );
-            }
-            setPreviousIndex(index);
-    
-            if(onIndexChanged) onIndexChanged(index);
-        }
+        if( index && onIndexChanged) onIndexChanged(index);
     }, [index]);
 
+    console.log(currentIndex)
     return (
         <div style={{...styles.root, ...containerStyle}}>
             { currentIndex !== undefined &&
