@@ -31,7 +31,7 @@ const App = () => {
             setIndex(2); 
             return
         }
-        setIndex(index - 1)
+        setIndex(index - 1);
     }
 
 

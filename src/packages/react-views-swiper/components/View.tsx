@@ -10,15 +10,17 @@ import React, {
 } from 'react';
 import { getPositionX } from '../../react-views-swiper-core';
 
+
+
 interface ViewProps {
-    children: ReactNode| ReactNode[];
-    currentIndex: number,
-    onChangeIndex: (index: number) => void | undefined;
-    hidden: boolean,
+    children?: ReactNode| ReactNode[];
+    currentIndex?: number,
+    onChangeIndex?: (index: number) => void;
+    hidden?: boolean,
     index?: number,
-    viewCount: number,
-    translation: number,
-    setTranslation: (index: number) => void | undefined;
+    viewCount?: number,
+    translation?: number,
+    setTranslation?: (index: number) => void;
 }
 
 const root: CSSProperties = {
@@ -35,7 +37,7 @@ const styles = {
     root,
 };
 
-const View = ({children, hidden, viewCount, currentIndex, onChangeIndex, setTranslation, translation }: ViewProps) => {
+const View = ({children, hidden = false, viewCount = 0, currentIndex = 0, onChangeIndex, setTranslation, translation = 0 }: ViewProps) => {
     
     const viewRef = createRef<HTMLDivElement>();
     const [viewWidth, setViewWidth] = useState(0);
@@ -53,7 +55,7 @@ const View = ({children, hidden, viewCount, currentIndex, onChangeIndex, setTran
         if (isDragging) {
             const currentPosition = getPositionX(event);
             const currentTranslate = currentPosition - startPosition;
-            setTranslation(currentTranslate);
+            setTranslation?.(currentTranslate);
         }
     };
 
@@ -64,21 +66,21 @@ const View = ({children, hidden, viewCount, currentIndex, onChangeIndex, setTran
 
             if(translation < -viewWidth/2){
                 if(currentIndex !== viewCount -1) {
-                    onChangeIndex( currentIndex + 1);
-                    setTranslation(0);
+                    onChangeIndex?.( currentIndex + 1);
+                    setTranslation?.(0);
                     return;
                 }
             }
     
             if(translation > viewWidth/2){
                 if(currentIndex !== 0) {
-                    onChangeIndex( currentIndex - 1);
-                    setTranslation(0);
+                    onChangeIndex?.( currentIndex - 1);
+                    setTranslation?.(0);
                     return;
                 }
             }
 
-            setTranslation(0);
+            setTranslation?.(0);
         }
 
         if(viewRef.current) viewRef.current?.classList.remove('grabbing');
