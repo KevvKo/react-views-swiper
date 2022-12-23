@@ -23,18 +23,22 @@ interface ViewProps {
     setTranslation?: (index: number) => void;
 }
 
-const root: CSSProperties = {
-    background: 'aquamarine',
-    position: 'relative',
-    left: 0,
-    height: '100%',
-    width: '100%',
-    flexShrink: 0,
-    transition: 'left 0.5s ease-out',
-};
+const styles = (isHovering: boolean) => {
 
-const styles = {
-    root,
+    const root: CSSProperties = {
+        background: 'aquamarine',
+        position: 'relative',
+        left: 0,
+        height: '100%',
+        width: '100%',
+        flexShrink: 0,
+        transition: 'left 0.5s ease-out',
+        cursor: isHovering ? 'grabbing' : 'grab'
+    };
+
+    return {
+        root
+    };
 };
 
 const View = ({children, hidden = false, viewCount = 0, currentIndex = 0, onChangeIndex, setTranslation, translation = 0 }: ViewProps) => {
@@ -74,6 +78,7 @@ const View = ({children, hidden = false, viewCount = 0, currentIndex = 0, onChan
     
             if(translation > viewWidth/2){
                 if(currentIndex !== 0) {
+
                     onChangeIndex?.( currentIndex - 1);
                     setTranslation?.(0);
                     return;
@@ -104,23 +109,21 @@ const View = ({children, hidden = false, viewCount = 0, currentIndex = 0, onChan
     }, [translation]);
 
     return (
-        <>
-            <div 
-                className='slide-view' 
-                ref={viewRef} 
-                style={styles.root} 
-                aria-hidden={hidden}
-                onTouchStart={(event) => handleTouchStart(event)}
-                onTouchEnd={handleTouchEnd}
-                onTouchMove={(event) => handleTouchMove(event)}
-                onMouseDown={(event) => handleTouchStart(event)}
-                onMouseUp={handleTouchEnd}
-                onMouseMove={(event) => handleTouchMove(event)}
-                onMouseLeave={handleTouchEnd}
-            >
-                {children}
-            </div>
-        </>
+        <div 
+            className='slide-view' 
+            ref={viewRef} 
+            style={styles(isDragging).root} 
+            aria-hidden={hidden}
+            onTouchStart={(event) => handleTouchStart(event)}
+            onTouchEnd={handleTouchEnd}
+            onTouchMove={(event) => handleTouchMove(event)}
+            onMouseDown={(event) => handleTouchStart(event)}
+            onMouseUp={handleTouchEnd}
+            onMouseMove={(event) => handleTouchMove(event)}
+            onMouseLeave={handleTouchEnd}
+        >
+            {children}
+        </div>
     );
 };
 
