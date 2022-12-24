@@ -1,0 +1,25 @@
+# source code
+src
+.babelrc
+webpack.config.js
+yarn.lock
+yarn-error.log
+tsconfig.json
+jest.config.js  
+
+# dependencies
+node_modules
+
+.git
+.gitignore
+CVS
+.svn
+.hg
+.lock-wscript
+.wafpickle-N
+.DS_Store
+npm-debug.log
+.npmrc
+.eslintrc.json
+config.gypi
+package-lock.json

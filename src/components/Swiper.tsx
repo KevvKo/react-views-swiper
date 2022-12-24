@@ -1,5 +1,5 @@
 import React, { Children, ReactNode, CSSProperties, useEffect, useState } from "react";
-import { useSyncWithIndex } from "../../react-views-swiper-core";
+import { useSyncWithIndex } from "../core/useSyncWithIndex";
 import View from "./View";
 
 interface SwiperProps {
@@ -32,7 +32,7 @@ const styles = {
     imageContainer,
 };
 
-const Swiper = ({children, index, onIndexChanged, renderOnlyActive, containerStyle}: SwiperProps) => {
+export const Swiper = ({children, index, onIndexChanged, renderOnlyActive, containerStyle}: SwiperProps) => {
     
     const childrenList = Children.toArray(children);
     const viewCount = childrenList.length;

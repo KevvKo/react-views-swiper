@@ -1,16 +1,20 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+/* eslint-disable */
+
+const path = require('path');
 
 module.exports = {
     mode: 'development',
-    entry: './src/index.tsx',
+    entry: {
+        main: './src/index.ts',
+    },
     devServer: {
         port: 8001
     },
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: 'public/index.html',
-        })
-    ],
+    output: {
+        filename: "[name].js",
+        path: path.resolve(__dirname, "dist"),
+        libraryTarget: 'commonjs'
+    },
     module: {
         rules: [
             {

@@ -8,7 +8,7 @@ import React, {
     MouseEvent, 
     TouchEvent
 } from 'react';
-import { getPositionX } from '../../react-views-swiper-core';
+import { getPositionX } from '../core/getPositionX';
 
 
 
@@ -26,7 +26,6 @@ interface ViewProps {
 const styles = (isHovering: boolean) => {
 
     const root: CSSProperties = {
-        background: 'aquamarine',
         position: 'relative',
         left: 0,
         height: '100%',

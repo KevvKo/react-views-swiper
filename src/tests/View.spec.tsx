@@ -33,7 +33,7 @@ describe( 'View Component',() => {
         );
         const viewElement = container.querySelector('[aria-hidden="false"]')!;
 
-
+        
         fireEvent.touchStart(viewElement, options );
         expect(viewElement.className).toContain('grabbing');
         fireEvent.touchEnd(viewElement, options);
