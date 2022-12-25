@@ -106,5 +106,5 @@
     "allowSyntheticDefaultImports": true,
     "rootDir": "src"
   },
-  "include": ["src"],
+  "exclude": ["src/demo"]
 }

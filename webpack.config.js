@@ -1,11 +1,12 @@
 /* eslint-disable */
 
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     mode: 'development',
     entry: {
-        main: './src/index.ts',
+        main: './src/demo/index.tsx',
     },
     devServer: {
         port: 8001
@@ -39,6 +40,9 @@ module.exports = {
               },
         ]   
     },
+    plugins: [new HtmlWebpackPlugin({
+        templateContent: '<div id="app"></div>'
+    })],
     resolve: {
         extensions: ['.ts', '.js', '.tsx'],
     }
