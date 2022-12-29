@@ -55,7 +55,7 @@ export const Swiper = ({
     }, [index]);
 
     useEffect(() => {
-        if(currentIndex && onChangeView) onChangeView(currentIndex);
+        if(onChangeView)  onChangeView(currentIndex);
     }, [currentIndex]);
 
 

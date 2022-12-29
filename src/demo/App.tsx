@@ -86,7 +86,7 @@ const App = () => {
                 <h2>Buttons to change the view</h2>
                 <div style={styles.containerStyle}>
                     <button onClick={handleClickBack}>Back</button>
-                    <Swiper index={index}>
+                    <Swiper index={index} onChangeView={() => console.log("voe")}>
                         <div style={styles.view1}>View 1</div>
                         <div style={styles.view2}>View 2</div>
                         <div style={styles.view3}>View 3</div>
