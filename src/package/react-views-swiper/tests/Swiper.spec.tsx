@@ -107,7 +107,7 @@ describe( 'Swiper Component',() => {
         const mockFunction = jest.fn();
 
         update(        
-            <Swiper index={2} onIndexChanged={mockFunction}>
+            <Swiper index={2} onChangeIndex={mockFunction}>
                 <div data-testid='test-child'>abc</div>
                 <div data-testid='test-child'>def</div>
                 <div data-testid='test-child'>xyz</div>
@@ -115,5 +115,32 @@ describe( 'Swiper Component',() => {
         );
 
         expect(mockFunction).toHaveBeenCalledTimes(1);
+    });
+    it('should invoke the callback if the view has changed', () => {
+
+        const mockFunction = jest.fn();
+
+        update(        
+            <Swiper onChangeView={mockFunction}>
+                <div data-testid='test-child'>abc</div>
+                <div data-testid='test-child'>def</div>
+                <div data-testid='test-child'>xyz</div>
+            </Swiper>
+        );
+
+        const options1 = { touches: [{ clientX: 300 }]};
+        const options2 = { touches: [{ clientX: 0 }]};
+
+        let viewElement = component.querySelector('[aria-hidden="false"]');
+        expect(viewElement).toContainHTML('abc');
+
+        fireEvent.touchStart(viewElement, options1 );
+        fireEvent.touchMove(viewElement, options2);
+        fireEvent.touchEnd(viewElement);
+        fireEvent.touchStart(viewElement, options1 );
+        fireEvent.touchMove(viewElement, options2);
+        fireEvent.touchEnd(viewElement);
+        
+        expect(mockFunction).toHaveBeenCalledTimes(2);
     });
 });

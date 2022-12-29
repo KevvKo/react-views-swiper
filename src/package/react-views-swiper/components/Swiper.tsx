@@ -5,7 +5,8 @@ import View from "./View";
 interface SwiperProps {
     children: ReactNode | React.ReactNode[];
     index?: number;
-    onIndexChanged?: (index: number) => void | undefined;
+    onChangeIndex?: (index: number) => void | undefined;
+    onChangeView?: (viewIndex: number) => void | undefined;
     renderOnlyActive?: boolean;
     containerStyle?: CSSProperties
 }
@@ -14,8 +15,8 @@ const root: CSSProperties = {
     overflow: "hidden",
     display: 'flex',
     position: 'relative',
-    height: '100%',
-    width: '100%',
+/*     height: '100%',
+ */    width: '100%',
 
 };
 
@@ -32,7 +33,7 @@ const styles = {
     imageContainer,
 };
 
-export const Swiper = ({children, index, onIndexChanged, renderOnlyActive, containerStyle}: SwiperProps) => {
+export const Swiper = ({children, index, onChangeIndex, onChangeView, renderOnlyActive, containerStyle}: SwiperProps) => {
     
     const childrenList = Children.toArray(children);
     const viewCount = childrenList.length;
@@ -41,8 +42,12 @@ export const Swiper = ({children, index, onIndexChanged, renderOnlyActive, conta
     const [ translation, setTranslation ] = useState(0);
     
     useEffect(() => {
-        if( index && onIndexChanged) onIndexChanged(index);
+        if(index && onChangeIndex) onChangeIndex(index);
     }, [index]);
+
+    useEffect(() => {
+        if(currentIndex && onChangeView) onChangeView(currentIndex);
+    }, [currentIndex]);
 
     return (
         <div style={{...styles.root, ...containerStyle}}>

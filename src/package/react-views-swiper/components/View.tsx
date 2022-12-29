@@ -35,8 +35,12 @@ const styles = (isHovering: boolean) => {
         cursor: isHovering ? 'grabbing' : 'grab'
     };
 
+    const childrenContainer: CSSProperties = {
+        pointerEvents: 'none'
+    }
     return {
-        root
+        root,
+        childrenContainer
     };
 };
 
@@ -121,7 +125,9 @@ const View = ({children, hidden = false, viewCount = 0, currentIndex = 0, onChan
             onMouseMove={(event) => handleTouchMove(event)}
             onMouseLeave={handleTouchEnd}
         >
-            {children}
+            <span style={styles(isDragging).childrenContainer} >
+                {children}
+            </span>
         </div>
     );
 };
