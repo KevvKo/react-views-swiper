@@ -1,6 +1,6 @@
 {
   "name": "react-views-swiper",
-  "version": "1.0.2",
+  "version": "1.1.1",
   "description": "A library to swipe between multiple views per drag an mouse ",
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
