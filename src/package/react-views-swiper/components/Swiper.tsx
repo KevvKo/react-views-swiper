@@ -4,11 +4,12 @@ import View from "./View";
 
 interface SwiperProps {
     children: ReactNode | React.ReactNode[];
+    containerStyle?: CSSProperties
     index?: number;
     onChangeIndex?: (index: number) => void | undefined;
     onChangeView?: (viewIndex: number) => void | undefined;
     renderOnlyActive?: boolean;
-    containerStyle?: CSSProperties
+    resistance?: boolean;
 }
 
 const root: CSSProperties = {
@@ -33,7 +34,15 @@ const styles = {
     imageContainer,
 };
 
-export const Swiper = ({children, index, onChangeIndex, onChangeView, renderOnlyActive, containerStyle}: SwiperProps) => {
+export const Swiper = ({
+    children, 
+    containerStyle, 
+    index, 
+    onChangeIndex, 
+    onChangeView, 
+    renderOnlyActive, 
+    resistance = false
+}: SwiperProps) => {
     
     const childrenList = Children.toArray(children);
     const viewCount = childrenList.length;
@@ -49,6 +58,7 @@ export const Swiper = ({children, index, onChangeIndex, onChangeView, renderOnly
         if(currentIndex && onChangeView) onChangeView(currentIndex);
     }, [currentIndex]);
 
+
     return (
         <div style={{...styles.root, ...containerStyle}}>
             { currentIndex !== undefined &&
@@ -59,12 +69,13 @@ export const Swiper = ({children, index, onChangeIndex, onChangeView, renderOnly
     
                         return(
                             <View   
-                                hidden={hidden} 
                                 currentIndex={currentIndex} 
-                                viewCount={childrenList.length}
+                                hidden={hidden} 
                                 onChangeIndex={setCurrentIndex}
-                                translation={translation}
+                                resistance={resistance}
                                 setTranslation={setTranslation}
+                                translation={translation}
+                                viewCount={childrenList.length}
                             >{child}</View>
                         );
                     })}

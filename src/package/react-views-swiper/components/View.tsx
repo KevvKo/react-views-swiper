@@ -9,18 +9,19 @@ import React, {
     TouchEvent
 } from 'react';
 import { getPositionX } from '../core/getPositionX';
-
+import { isBoundary } from '../core/isBoundary';
 
 
 interface ViewProps {
     children?: ReactNode| ReactNode[];
     currentIndex?: number,
-    onChangeIndex?: (index: number) => void;
     hidden?: boolean,
     index?: number,
-    viewCount?: number,
-    translation?: number,
+    onChangeIndex?: (index: number) => void;
+    resistance?: boolean,
     setTranslation?: (index: number) => void;
+    translation?: number,
+    viewCount?: number,
 }
 
 const styles = (isHovering: boolean) => {
@@ -44,7 +45,16 @@ const styles = (isHovering: boolean) => {
     };
 };
 
-const View = ({children, hidden = false, viewCount = 0, currentIndex = 0, onChangeIndex, setTranslation, translation = 0 }: ViewProps) => {
+const View = ({
+    children, 
+    currentIndex = 0, 
+    hidden = false, 
+    onChangeIndex, 
+    resistance = false,
+    setTranslation, 
+    translation = 0, 
+    viewCount = 0, 
+}: ViewProps) => {
     
     const viewRef = createRef<HTMLDivElement>();
     const [viewWidth, setViewWidth] = useState(0);
@@ -108,7 +118,11 @@ const View = ({children, hidden = false, viewCount = 0, currentIndex = 0, onChan
     }, [currentIndex]);
 
     useLayoutEffect(() => {
-        if(viewRef.current) viewRef.current.style.transform = `translateX(${translation}px)`;
+
+        if(viewRef.current) {
+            if( resistance && isBoundary(currentIndex, translation, viewCount -1 )) return
+            viewRef.current.style.transform = `translateX(${translation}px)`;
+        }
     }, [translation]);
 
     return (
