@@ -1,6 +1,6 @@
 {
   "name": "react-views-swiper",
-  "version": "1.1.2",
+  "version": "1.1.4",
   "description": "A library to swipe between multiple views per drag an mouse ",
   "main": "./lib/cjs/package/react-views-swiper/index.js",
   "module": "./lib/esm/package/react-views-swiper/index.js",
@@ -8,7 +8,7 @@
   "scripts": {
     "start": "webpack serve",
     "test": "jest --watch",
-    "build": "yarn build:esm && yarn build:cjs",
+    "build": "rm -rf lib && yarn build:esm && yarn build:cjs",
     "build:esm": "tsc",
     "build:cjs": "tsc --module commonjs --outDir lib/cjs",
     "build:demo": "tsc"

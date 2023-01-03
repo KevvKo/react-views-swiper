@@ -55,7 +55,6 @@ const View = ({
     translation = 0, 
     viewCount = 0, 
 }: ViewProps) => {
-    
     const viewRef = createRef<HTMLDivElement>();
     const [viewWidth, setViewWidth] = useState(0);
     const [isDragging, setIsDragging] = useState(false);
@@ -113,9 +112,9 @@ const View = ({
         }
     }, [viewWidth, viewRef]);
 
-    useLayoutEffect(() => {
+    useLayoutEffect(() => {        
         if(viewRef.current) viewRef.current.style.left = `-${viewWidth*currentIndex}px`;
-    }, [currentIndex]);
+    }, [currentIndex, viewRef]);
 
     useLayoutEffect(() => {
 

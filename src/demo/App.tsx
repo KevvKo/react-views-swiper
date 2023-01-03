@@ -3,7 +3,7 @@ import { Swiper } from "../package/react-views-swiper";
 
 const App = () => {
 
-    const [index, setIndex] = useState(0);
+    const [index, setIndex] = useState(1);
 
     const view1: CSSProperties = {
             backgroundColor: '#FFA301',
@@ -50,7 +50,7 @@ const App = () => {
 
     return(
         <main>
-            <section>
+            {/* <section>
                 <h2>Basic Usage</h2>
                 <Swiper>
                     <div style={styles.view1}>View 1</div>
@@ -81,7 +81,7 @@ const App = () => {
                     <div style={styles.view2}>View 2</div>
                     <div style={styles.view3}>View 3</div>
                 </Swiper>
-            </section>
+            </section> */}
             <section>
                 <h2>Buttons to change the view</h2>
                 <div style={styles.containerStyle}>
