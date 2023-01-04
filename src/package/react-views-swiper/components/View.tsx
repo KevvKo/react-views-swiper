@@ -11,6 +11,11 @@ import React, {
 import { getPositionX } from '../core/getPositionX';
 import { isBoundary } from '../core/isBoundary';
 
+/**
+@todo implement transition listener to remove left transition
+@todo transition for left animation is not default, will just be added if transition is subscribed
+
+*/
 
 interface ViewProps {
     children?: ReactNode| ReactNode[];
@@ -32,7 +37,7 @@ const styles = (isHovering: boolean) => {
         height: '100%',
         width: '100%',
         flexShrink: 0,
-        transition: 'left 0.5s ease-out',
+        // transition: 'left 0.5s ease-out',
         cursor: isHovering ? 'grabbing' : 'grab'
     };
 
@@ -103,6 +108,18 @@ const View = ({
         if(viewRef.current) viewRef.current?.classList.remove('grabbing');
 
     };
+
+    const handleWindowResize = () => {
+        if(viewRef.current) {
+            setViewWidth( viewRef.current.getBoundingClientRect().width);
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener('resize', handleWindowResize);
+
+        return window.removeEventListener('resize', handleWindowResize);
+    }, [viewRef]);
 
     useEffect(() => {
         if(viewRef && viewWidth === 0) {
