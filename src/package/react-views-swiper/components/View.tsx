@@ -5,7 +5,7 @@ import React, {
     useState, 
     CSSProperties, 
     createRef, 
-    MouseEvent, 
+    MouseEvent,
     TouchEvent
 } from 'react';
 import { getPositionX } from '../core/getPositionX';
@@ -23,6 +23,7 @@ interface ViewProps {
     hidden?: boolean,
     index?: number,
     onChangeIndex?: (index: number) => void;
+    renderOnlyActive?: boolean,
     resistance?: boolean,
     setTranslation?: (index: number) => void;
     translation?: number,
@@ -55,6 +56,7 @@ const View = ({
     currentIndex = 0, 
     hidden = false, 
     onChangeIndex, 
+    renderOnlyActive = false,
     resistance = false,
     setTranslation, 
     translation = 0, 
@@ -117,7 +119,7 @@ const View = ({
 
     useEffect(() => {
         window.addEventListener('resize', handleWindowResize);
-
+        window.addEventListener('transitionend', () => console.log("jo"))
         return window.removeEventListener('resize', handleWindowResize);
     }, [viewRef]);
 
@@ -130,7 +132,7 @@ const View = ({
     }, [viewWidth, viewRef]);
 
     useLayoutEffect(() => {        
-        if(viewRef.current) viewRef.current.style.left = `-${viewWidth*currentIndex}px`;
+        if(viewRef.current && !renderOnlyActive) viewRef.current.style.left = `-${viewWidth*currentIndex}px`;
     }, [currentIndex, viewRef]);
 
     useLayoutEffect(() => {

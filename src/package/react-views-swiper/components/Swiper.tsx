@@ -58,7 +58,7 @@ export const Swiper = ({
         if(onChangeView)  onChangeView(currentIndex);
     }, [currentIndex]);
 
-
+    console.log(currentIndex)
     return (
         <div style={{...styles.root, ...containerStyle}}>
             { currentIndex !== undefined &&
@@ -72,6 +72,7 @@ export const Swiper = ({
                                 currentIndex={currentIndex} 
                                 hidden={hidden} 
                                 onChangeIndex={setCurrentIndex}
+                                renderOnlyActive={renderOnlyActive}
                                 resistance={resistance}
                                 setTranslation={setTranslation}
                                 translation={translation}
