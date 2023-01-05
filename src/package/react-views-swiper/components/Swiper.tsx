@@ -49,7 +49,8 @@ export const Swiper = ({
     const maxIndex = viewCount - 1;
     const [ currentIndex, setCurrentIndex ] = useSyncWithIndex(index!, maxIndex);
     const [ translation, setTranslation ] = useState(0);
-    
+    const [isDragging, setIsDragging] = useState(false);
+
     useEffect(() => {
         if(index && onChangeIndex) onChangeIndex(index);
     }, [index]);
@@ -58,7 +59,6 @@ export const Swiper = ({
         if(onChangeView)  onChangeView(currentIndex);
     }, [currentIndex]);
 
-    console.log(currentIndex)
     return (
         <div style={{...styles.root, ...containerStyle}}>
             { currentIndex !== undefined &&
@@ -71,9 +71,11 @@ export const Swiper = ({
                             <View   
                                 currentIndex={currentIndex} 
                                 hidden={hidden} 
+                                isDragging={isDragging}
                                 onChangeIndex={setCurrentIndex}
                                 renderOnlyActive={renderOnlyActive}
                                 resistance={resistance}
+                                setIsDragging={setIsDragging}
                                 setTranslation={setTranslation}
                                 translation={translation}
                                 viewCount={childrenList.length}

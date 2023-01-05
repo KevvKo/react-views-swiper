@@ -36,7 +36,7 @@ const App = () => {
             return
         }
 
-        setIndex( prev => prev + 1)
+        setIndex( prev => prev - 1)
     }
 
     const handleClickNext= () => {
