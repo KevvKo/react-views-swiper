@@ -1,5 +1,5 @@
 import React from 'react';
-import View from '../components/View';
+import View from '../components/View.Component';
 import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 
@@ -63,14 +63,14 @@ describe( 'View Component',() => {
     it('should ', () => {
         const mockTranslation = 50;
         const mockSetTranslation = jest.fn();
-        render(<View translation={mockTranslation} setTranslation={mockSetTranslation}/>);
+        render(<View />);
 
     });
     it('should call the translation function', () => {
         const options = { pageX: 100 };
         const setTranslation= jest.fn();
         
-        const { container } = render(<View setTranslation={setTranslation}/>);
+        const { container } = render(<View />);
         const viewElement = container.querySelector('[aria-hidden="false"]')!;
 
         fireEvent.mouseMove(viewElement, options);
@@ -83,21 +83,21 @@ describe( 'View Component',() => {
         expect(setTranslation).toHaveBeenCalledTimes(2);
     });
     it('should contain the correct translation value on update', () => {
-        const { container, rerender } = render(<View translation={0}/>);
+        const { container, rerender } = render(<View />);
         const viewElement = container.querySelector('[aria-hidden="false"]')!;
 
         expect(viewElement).toHaveStyle({ 'transform': 'translateX(0px)'});
 
-        rerender(<View translation={50}/>);
+        rerender(<View />);
         expect(viewElement).toHaveStyle({ 'transform': 'translateX(50px)'});
     });
     it('should contain the correct left value on current index update', () => {
-        const { container, rerender } = render(<View currentIndex={0}/>);
+        const { container, rerender } = render(<View />);
         const viewElement = container.querySelector('[aria-hidden="false"]')!;
 
         expect(viewElement).toHaveStyle({ 'left': '-0px'});
 
-        rerender(<View currentIndex={2}/>);
+        rerender(<View />);
         expect(viewElement).toHaveStyle({ 'left': '-0px'});
     });
 });

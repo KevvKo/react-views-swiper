@@ -1,5 +1,5 @@
 import React from 'react';
-import Swiper from '../components/Swiper';
+import Swiper from '../components/Swiper.Component';
 import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 

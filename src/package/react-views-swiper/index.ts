@@ -1,1 +1,1 @@
-export { default as Swiper } from './components/Swiper';
+export { default as Swiper } from './components/Swiper.Component';

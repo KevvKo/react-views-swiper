@@ -1,76 +1,50 @@
-import { render } from '@testing-library/react';
 import React, { 
-    useLayoutEffect, 
-    ReactNode, 
-    useEffect,
-    useState, 
-    CSSProperties, 
-    createRef, 
+    useLayoutEffect,     
     MouseEvent,
-    TouchEvent
-} from 'react';
+    TouchEvent,
+    createRef, 
+    Children, 
+    ReactNode, 
+    CSSProperties, 
+    useEffect, 
+    useState 
+} from "react";
+import { useSyncWithIndex } from "../core/useSyncWithIndex";
 import { getPositionX } from '../core/getPositionX';
 import { isBoundary } from '../core/isBoundary';
+import View from "./View.Component";
+import { styles } from "./Swiper.style";
 
-/**
-@todo implement transition listener to remove left transition
-@todo transition for left animation is not default, will just be added if transition is subscribed
-
-*/
-
-interface ViewProps {
-    children?: ReactNode| ReactNode[];
-    currentIndex?: number,
-    hidden?: boolean,
-    isDragging?: boolean,
-    index?: number,
-    onChangeIndex?: (index: number) => void;
-    renderOnlyActive?: boolean,
-    resistance?: boolean,
-    setIsDragging?: (value: boolean) => void;
-    setTranslation?: (index: number) => void;
-    translation?: number,
-    viewCount?: number,
+interface SwiperProps {
+    children: ReactNode | React.ReactNode[];
+    containerStyle?: CSSProperties
+    index?: number;
+    onChangeIndex?: (index: number) => void | undefined;
+    onChangeView?: (viewIndex: number) => void | undefined;
+    renderOnlyActive?: boolean;
+    resistance?: boolean;
 }
 
-const styles = (isHovering: boolean) => {
-
-    const root: CSSProperties = {
-        position: 'relative',
-        left: 0,
-        height: '100%',
-        width: '100%',
-        flexShrink: 0,
-        // transition: 'left 0.5s ease-out',
-        cursor: isHovering ? 'grabbing' : 'grab'
-    };
-
-    const childrenContainer: CSSProperties = {
-        pointerEvents: 'none'
-    }
-    return {
-        root,
-        childrenContainer
-    };
-};
-
-const View = ({
+export const Swiper = ({
     children, 
-    currentIndex = 0, 
-    isDragging = false,
-    hidden = false, 
+    containerStyle, 
+    index, 
     onChangeIndex, 
-    renderOnlyActive = false,
-    resistance = false,
-    setIsDragging,
-    setTranslation, 
-    translation = 0, 
-    viewCount = 0, 
-}: ViewProps) => {
+    onChangeView, 
+    renderOnlyActive, 
+    resistance = false
+}: SwiperProps) => {
+
     const viewRef = createRef<HTMLDivElement>();
+    const childrenList = Children.toArray(children);
+    const viewCount = childrenList.length;
+    const maxIndex = viewCount - 1;
+    const [ currentIndex, setCurrentIndex ] = useSyncWithIndex(index!, maxIndex);
+    const [ translation, setTranslation ] = useState(0);
+    const [isDragging, setIsDragging] = useState(false);
     const [viewWidth, setViewWidth] = useState(0);
     const [startPosition, setStartPosition ] = useState(0);
-
+    
     const handleTouchStart = (event: MouseEvent | TouchEvent) => {
         setIsDragging?.(true);
 
@@ -95,7 +69,7 @@ const View = ({
             if(renderOnlyActive) setTranslation?.(0)
             if(translation < -viewWidthHalf){
                 if(currentIndex !== viewCount -1) {
-                    onChangeIndex?.( currentIndex + 1);
+                    setCurrentIndex?.( currentIndex + 1);
                     if(!renderOnlyActive) setTranslation?.((currentIndex+1) *-100);
                     return;
                 }
@@ -103,7 +77,7 @@ const View = ({
             if(translation > viewWidthHalf){
                 if(currentIndex !== 0) {
 
-                    onChangeIndex?.( currentIndex - 1);
+                    setCurrentIndex?.( currentIndex - 1);
                     if(!renderOnlyActive) setTranslation?.((currentIndex+1) *-100);
                     return;
                 }
@@ -113,6 +87,14 @@ const View = ({
         if(viewRef.current) viewRef.current?.classList.remove('grabbing');
 
     };
+    
+    useEffect(() => {
+        if(index && onChangeIndex) onChangeIndex(index);
+    }, [index]);
+
+    useEffect(() => {
+        if(onChangeView)  onChangeView(currentIndex);
+    }, [currentIndex]);
 
     useEffect(() => {
         if(viewRef && viewWidth === 0) {
@@ -147,24 +129,39 @@ const View = ({
     }, [translation]);
 
     return (
-        <div 
-            className='slide-view' 
-            ref={viewRef} 
-            style={styles(isDragging).root} 
-            aria-hidden={hidden}
-            onTouchStart={(event) => handleTouchStart(event)}
-            onTouchEnd={handleTouchEnd}
-            onTouchMove={(event) => handleTouchMove(event)}
-            onMouseDown={(event) => handleTouchStart(event)}
-            onMouseUp={handleTouchEnd}
-            onMouseMove={(event) => handleTouchMove(event)}
-            onMouseLeave={handleTouchEnd}
-        >
-            <span style={styles(isDragging).childrenContainer} >
-                {children}
-            </span>
+        <div style={{...styles(isDragging).root, ...containerStyle}}>
+            { currentIndex !== undefined &&
+                <div 
+                    id="slide-container" 
+                    ref={viewRef} 
+                    style={styles(isDragging).imageContainer}
+                    onTouchStart={(event) => handleTouchStart(event)}
+                    onTouchEnd={handleTouchEnd}
+                    onTouchMove={(event) => handleTouchMove(event)}
+                    onMouseDown={(event) => handleTouchStart(event)}
+                    onMouseUp={handleTouchEnd}
+                    onMouseMove={(event) => handleTouchMove(event)}
+                    onMouseLeave={handleTouchEnd}                
+                >
+                    {Children.map(childrenList, (child, indexChild) => {
+                        if(renderOnlyActive && currentIndex !== indexChild) return null;
+                        const hidden = currentIndex !== indexChild;
+    
+                        return(
+                            <View   
+                                hidden={hidden} 
+                            >{child}</View>
+                        );
+                    })}
+                </div>
+            }
         </div>
     );
 };
 
-export default View;
+Swiper.defaultProps = {
+    index: 0,
+    renderOnlyActive: false
+};
+
+export default Swiper;
