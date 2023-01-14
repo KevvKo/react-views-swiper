@@ -94,6 +94,16 @@ const App = () => {
                     <button onClick={handleClickNext}>Next</button>
                 </div>
             </section>
+            <section>
+                <h2>Buttons to change the view</h2>
+                <div style={styles.containerStyle}>
+                    <Swiper enablePointerEvents>
+                        <div onClick={() => alert('enablePointerEvent works')} style={styles.view1}>View 1</div>
+                        <div style={styles.view2}>View 2</div>
+                        <div style={styles.view3}>View 3</div>
+                    </Swiper>
+                </div>
+            </section>
         </main>
     );
 };

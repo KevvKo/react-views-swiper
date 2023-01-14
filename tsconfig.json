@@ -106,5 +106,5 @@
     "allowSyntheticDefaultImports": true,
     "rootDir": "src"
   },
-  "exclude": ["src/demo"]
+  "exclude": ["src/demo", "src/package/react-views-swiper/tests"]
 }

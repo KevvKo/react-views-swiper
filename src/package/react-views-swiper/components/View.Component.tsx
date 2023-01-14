@@ -8,11 +8,13 @@ import { styles } from './View.style';
 
 interface ViewProps {
     children?: ReactNode| ReactNode[];
+    enablePointerEvents: boolean
     hidden?: boolean,
 }
 
 const View = ({
     children, 
+    enablePointerEvents,
     hidden = false,  
 }: ViewProps) => {
     const viewRef = createRef<HTMLDivElement>();
@@ -21,10 +23,10 @@ const View = ({
         <div 
             className='slide-view' 
             ref={viewRef} 
-            style={styles.root} 
+            style={styles(enablePointerEvents).root} 
             aria-hidden={hidden}
         >
-            <span style={styles.childrenContainer} >
+            <span style={styles(enablePointerEvents).childrenContainer} >
                 {children}
             </span>
         </div>

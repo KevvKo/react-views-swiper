@@ -1,14 +1,19 @@
 import { CSSProperties } from "react";
 
-export const styles = {
-    root: {
+export const styles = (enablePointerEvents: boolean) => {
+    const root = {
         position: 'relative',
-        left: 0,
+        left: 0,    
         height: '100%',
         width: '100%',
         flexShrink: 0,
-    } as CSSProperties,
-   childrenContainer: {
-        pointerEvents: 'none'
-    } as CSSProperties
+    } as CSSProperties;
+   const childrenContainer = {
+        pointerEvents: enablePointerEvents ? 'auto' : 'none'
+    } as CSSProperties;
+
+    return {
+        root,
+        childrenContainer
+    };
 };

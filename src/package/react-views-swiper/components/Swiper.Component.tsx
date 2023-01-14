@@ -17,7 +17,8 @@ import { styles } from "./Swiper.style";
 
 interface SwiperProps {
     children: ReactNode | React.ReactNode[];
-    containerStyle?: CSSProperties
+    containerStyle?: CSSProperties,
+    enablePointerEvents?: boolean;
     index?: number;
     onChangeIndex?: (index: number) => void | undefined;
     onChangeView?: (viewIndex: number) => void | undefined;
@@ -28,6 +29,7 @@ interface SwiperProps {
 export const Swiper = ({
     children, 
     containerStyle, 
+    enablePointerEvents=false,
     index, 
     onChangeIndex, 
     onChangeView, 
@@ -149,6 +151,7 @@ export const Swiper = ({
     
                         return(
                             <View   
+                                enablePointerEvents={enablePointerEvents}
                                 hidden={hidden} 
                             >{child}</View>
                         );
