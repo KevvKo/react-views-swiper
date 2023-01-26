@@ -9,10 +9,10 @@ import React, {
     useEffect, 
     useState 
 } from "react";
-import { useSyncWithIndex } from "../core/useSyncWithIndex";
-import { getPositionX } from '../core/getPositionX';
-import { isBoundary } from '../core/isBoundary';
-import View from "./View.Component";
+import { useSyncWithIndex } from "../../core/useSyncWithIndex";
+import { getPositionX } from '../../core/getPositionX';
+import { isBoundary } from '../../core/isBoundary';
+import View from "../view/View.Component";
 import { styles } from "./Swiper.style";
 
 interface SwiperProps {
@@ -66,9 +66,9 @@ export const Swiper = ({
 
         if(isDragging){
             setIsDragging?.(false);
-            const viewWidthHalf = ((viewWidth * 0.5)/viewWidth)*100
+            const viewWidthHalf = ((viewWidth * 0.5)/viewWidth)*100;
 
-            if(renderOnlyActive) setTranslation?.(0)
+            if(renderOnlyActive) setTranslation?.(0);
             if(translation < -viewWidthHalf){
                 if(currentIndex !== viewCount -1) {
                     setCurrentIndex?.( currentIndex + 1);
@@ -115,12 +115,12 @@ export const Swiper = ({
     useLayoutEffect(() => {
 
         if(viewRef.current) {
-            if( resistance && isBoundary(currentIndex, translation, viewCount -1 )) return
+            if( resistance && isBoundary(currentIndex, translation, viewCount -1 )) return;
             if (isDragging) {
 
                 let newTranslation;
                 if(renderOnlyActive) newTranslation = translation;
-                else newTranslation = (currentIndex*-100) + translation
+                else newTranslation = (currentIndex*-100) + translation;
 
                 viewRef.current.style.transform = `translateX(${newTranslation}%)`;
             }

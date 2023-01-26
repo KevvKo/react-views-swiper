@@ -20,5 +20,5 @@ export const styles = (isHovering: boolean) => {
     return {
         root,
         imageContainer,
-    }
+    };
 };
