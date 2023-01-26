@@ -1,6 +1,7 @@
 import { CSSProperties } from "react";
+import { getCursorClass } from "../../core/getGrabbingClass";
 
-export const styles = (isHovering: boolean) => {
+export const styles = (isHovering: boolean, touchEventsEnabled: boolean) => {
 
     const root: CSSProperties = {
         overflow: "hidden",
@@ -14,7 +15,7 @@ export const styles = (isHovering: boolean) => {
         position: 'relative',
         height: '100%',
         width: '100%',
-        cursor: isHovering ? 'grabbing' : 'grab'
+        cursor: getCursorClass(isHovering, touchEventsEnabled)
     };
 
     return {

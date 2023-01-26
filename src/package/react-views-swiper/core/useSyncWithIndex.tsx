@@ -30,5 +30,3 @@ export const useSyncWithIndex = (index: number, maxIndex: number ) => {
 
     return [currentIndex, setCurrentIndex] as const;
 };
-
-export default useSyncWithIndex;

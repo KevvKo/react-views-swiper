@@ -8,8 +8,10 @@ export const styles = (enablePointerEvents: boolean) => {
         width: '100%',
         flexShrink: 0,
     } as CSSProperties;
-   const childrenContainer = {
-        pointerEvents: enablePointerEvents ? 'auto' : 'none'
+
+    const childrenContainer = {
+        pointerEvents: enablePointerEvents ? 'auto' : 'none',
+        height: '100%',
     } as CSSProperties;
 
     return {

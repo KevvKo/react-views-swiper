@@ -26,9 +26,9 @@ const View = ({
             style={styles(enablePointerEvents).root} 
             aria-hidden={hidden}
         >
-            <span style={styles(enablePointerEvents).childrenContainer} >
+            <div style={styles(enablePointerEvents).childrenContainer} >
                 {children}
-            </span>
+            </div>
         </div>
     );
 };

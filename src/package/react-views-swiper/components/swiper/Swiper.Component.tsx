@@ -19,6 +19,7 @@ interface SwiperProps {
     children: ReactNode | React.ReactNode[];
     containerStyle?: CSSProperties,
     enablePointerEvents?: boolean;
+    enableTouchEvents?: boolean;
     index?: number;
     onChangeIndex?: (index: number) => void | undefined;
     onChangeView?: (viewIndex: number) => void | undefined;
@@ -30,6 +31,7 @@ export const Swiper = ({
     children, 
     containerStyle, 
     enablePointerEvents=false,
+    enableTouchEvents=true,
     index, 
     onChangeIndex, 
     onChangeView, 
@@ -48,14 +50,16 @@ export const Swiper = ({
     const [startPosition, setStartPosition ] = useState(0);
     
     const handleTouchStart = (event: MouseEvent | TouchEvent) => {
-        setIsDragging?.(true);
+        if(enableTouchEvents) {
+            setIsDragging?.(true);
 
-        setStartPosition(getPositionX(event));
-        if(viewRef.current) viewRef.current?.classList.add('grabbing');   
+            setStartPosition(getPositionX(event));
+            if(viewRef.current) viewRef.current?.classList.add('grabbing');  
+        } 
     };
 
     const handleTouchMove = (event: MouseEvent | TouchEvent) => {
-        if (isDragging) {
+        if (isDragging && enableTouchEvents) {
             const currentPosition = getPositionX(event);
             const currentTranslate = ((currentPosition - startPosition)/viewWidth)*100;
             setTranslation?.(currentTranslate);
@@ -64,30 +68,31 @@ export const Swiper = ({
 
     const handleTouchEnd = () => {
 
-        if(isDragging){
-            setIsDragging?.(false);
-            const viewWidthHalf = ((viewWidth * 0.5)/viewWidth)*100;
-
-            if(renderOnlyActive) setTranslation?.(0);
-            if(translation < -viewWidthHalf){
-                if(currentIndex !== viewCount -1) {
-                    setCurrentIndex?.( currentIndex + 1);
-                    if(!renderOnlyActive) setTranslation?.((currentIndex+1) *-100);
-                    return;
+        if(enableTouchEvents){
+            if(isDragging){
+                setIsDragging?.(false);
+                const viewWidthHalf = ((viewWidth * 0.5)/viewWidth)*100;
+    
+                if(renderOnlyActive) setTranslation?.(0);
+                if(translation < -viewWidthHalf){
+                    if(currentIndex !== viewCount -1) {
+                        setCurrentIndex?.( currentIndex + 1);
+                        if(!renderOnlyActive) setTranslation?.((currentIndex+1) *-100);
+                        return;
+                    }
+                }
+                if(translation > viewWidthHalf){
+                    if(currentIndex !== 0) {
+    
+                        setCurrentIndex?.( currentIndex - 1);
+                        if(!renderOnlyActive) setTranslation?.((currentIndex+1) *-100);
+                        return;
+                    }
                 }
             }
-            if(translation > viewWidthHalf){
-                if(currentIndex !== 0) {
-
-                    setCurrentIndex?.( currentIndex - 1);
-                    if(!renderOnlyActive) setTranslation?.((currentIndex+1) *-100);
-                    return;
-                }
-            }
+    
+            if(viewRef.current) viewRef.current?.classList.remove('grabbing');
         }
-
-        if(viewRef.current) viewRef.current?.classList.remove('grabbing');
-
     };
     
     useEffect(() => {
@@ -131,12 +136,12 @@ export const Swiper = ({
     }, [translation]);
 
     return (
-        <div style={{...styles(isDragging).root, ...containerStyle}}>
+        <div style={{...styles(isDragging, enableTouchEvents).root, ...containerStyle}}>
             { currentIndex !== undefined &&
                 <div 
                     id="slide-container" 
                     ref={viewRef} 
-                    style={styles(isDragging).imageContainer}
+                    style={styles(isDragging, enableTouchEvents ).imageContainer}
                     onTouchStart={(event) => handleTouchStart(event)}
                     onTouchEnd={handleTouchEnd}
                     onTouchMove={(event) => handleTouchMove(event)}
